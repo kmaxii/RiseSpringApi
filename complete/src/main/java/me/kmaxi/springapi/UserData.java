@@ -1,6 +1,8 @@
 package me.kmaxi.springapi;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserData {
     private String time;
     private double longitude;
@@ -8,7 +10,9 @@ public class UserData {
     private String busTransport;
     private String activityChange;
     private float money;
+    @JsonProperty("isOnScooter")
     private boolean isOnScooter;
+
     private String activities;
 
     // Getters and setters
