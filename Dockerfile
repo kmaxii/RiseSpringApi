@@ -4,6 +4,6 @@ WORKDIR /
 
 COPY .. /
 
-RUN javac complete.java
+RUN javac RiseSpringApi.java
 
-CMD ["java", "-jar", "complete.jar"]
+CMD ["java", "-jar", "RiseSpringApi.jar"]
