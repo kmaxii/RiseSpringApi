@@ -24,11 +24,9 @@ jobs:
 
     - name: Grant execute permission for Gradle Wrapper
       run: chmod +x ./gradlew
-      working-directory: complete
-      
+
     - name: Build with Gradle Wrapper
       run: ./gradlew build
-      working-directory: complete
 
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v6
