@@ -12,8 +12,9 @@ public class UserData {
     private float money;
     @JsonProperty("isOnScooter")
     private boolean isOnScooter;
-
     private String activities;
+    private int id;
+
 
     // Getters and setters
     public String getTime() {
@@ -78,5 +79,9 @@ public class UserData {
 
     public void setActivities(String activities) {
         this.activities = activities;
+    }
+
+    public int getId() {
+        return id;
     }
 }

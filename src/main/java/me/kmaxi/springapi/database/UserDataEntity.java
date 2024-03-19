@@ -1,4 +1,4 @@
-package me.kmaxi.springapi;
+package me.kmaxi.springapi.database;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,9 +20,6 @@ public class UserDataEntity {
     private boolean isOnScooter;
     private String activities;
 
-    public void setEntryID(int entryID) {
-        this.entryID = entryID;
-    }
 
     public void setUserID(int userID) {
         this.userID = userID;

@@ -1,10 +1,17 @@
 package me.kmaxi.springapi;
 
+import me.kmaxi.springapi.database.UserDataEntity;
+import me.kmaxi.springapi.database.UserDataRepository;
+import me.kmaxi.springapi.database.UserTrackerEntity;
+import me.kmaxi.springapi.database.UserTrackerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 public class UserDataController {
@@ -12,14 +19,17 @@ public class UserDataController {
     @Autowired
     private UserDataRepository userDataRepository;
 
-    @PostMapping("/processUserData")
-    public ResponseEntity<String> processUserData(@RequestBody UserDataListWrapper userDataListWrapper) {
+    @Autowired
+    private UserTrackerRepository userTrackerRepository;
 
-        int userId = (int) (Math.random() * Integer.MAX_VALUE);
+    @PostMapping("/processUserData")
+    public ResponseEntity<String> processUserData(@RequestBody UserDataListWrapper userDataListWrapper, HttpServletRequest request) {
+
+        String ipAddress = request.getRemoteAddr();
 
         for (UserData userData : userDataListWrapper.getUserDataList()) {
             UserDataEntity userDataEntity = new UserDataEntity();
-            userDataEntity.setUserID(userId);
+            userDataEntity.setUserID(userData.getId());
             userDataEntity.setTime(userData.getTime());
             userDataEntity.setLongitude(userData.getLongitude());
             userDataEntity.setLatitude(userData.getLatitude());
@@ -31,6 +41,16 @@ public class UserDataController {
 
             userDataRepository.save(userDataEntity);
         }
+
+        UserTrackerEntity userTrackerEntity = new UserTrackerEntity();
+        userTrackerEntity.setUserID(userDataListWrapper.getUserDataList().get(0).getId());
+
+        // Hash the ip with SHA-256
+        ipAddress = Hashing.sha256(ipAddress);
+        userTrackerEntity.setIpHash(ipAddress);
+        userTrackerRepository.save(userTrackerEntity);
+
+
         return ResponseEntity.ok("Processed userDataList successfully");
     }
 }
